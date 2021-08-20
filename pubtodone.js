@@ -118,7 +118,8 @@ const convert = async ({
   engine = "xelatex",
 }) => {
   console.log(input);
-  const dirpath = path.dirname(await fs.promises.realpath(input));
+  const dirpath = path.dirname(fs.realpathSync(input))
+  console.log(dirpath)
   const args = [
     "-f",
     "docx",
@@ -126,7 +127,7 @@ const convert = async ({
     "latex",
     "-o",
     `${dirpath}/temp.tex`,
-    "--extract-media",
+    "--extract-media=media",
   ];
   const miscargs = [
     received,
@@ -139,145 +140,119 @@ const convert = async ({
     type,
     citation,
   ].map((m) => m ?? "TOBEFILLEDIN");
-  try {
-    await nodePandoc(input, args);
-  } catch (e) {
-    console.log("oop");
-    console.error(e);
-  }
-  fs.promises
-    .readFile(`${dirpath}/temp.tex`, { encoding: "utf8" }, (err, data) => { })
-    .then((res) => {
-      //Easy regex, just simple find replace
-      let convData = res;
-      Object.values(regexes).forEach((section) => {
-        section["find"].forEach((regex, index) => {
-          convData = convData.replaceAll(regex, section["replace"][index]);
-        });
-      });
-      return convData;
-    })
-    .then((res) => {
-      return (
-        joteBoilerplate +
-        res +
-        `
+
+  await nodePandoc(input, args)
+
+  let convData = fs.readFileSync(`${dirpath}/temp.tex`, { encoding: "utf8" })
+
+  //Easy regex, just simple find replace
+  Object.values(regexes).forEach((section) => {
+    section["find"].forEach((regex, index) => {
+      convData = convData.replaceAll(regex, section["replace"][index]);
+    });
+  });
+  convData = joteBoilerplate +
+    convData +
+    `
 \\end{document}`
-      );
-    })
-    .then((res) => {
-      // complex regex: find something, then put it somewhere else
-      let convData = res;
-      Object.values(complexRegexes).forEach((section) => {
-        section["match"].forEach((regex, index) => {
-          const match = section["number"][index]
-            ? Array.from(convData.matchAll(regex)).slice(
-              0,
-              section["number"][index]
-            )
-            : Array.from(convData.matchAll(regex));
-          if (match.length) {
-            match.forEach((m) => {
-              const importantThingy = m[section["replace"][index]];
-              const wholeGuy = m[0];
-              convData = convData.replace(
-                section["find"][index],
-                importantThingy
-              );
-              convData = convData.replaceAll(wholeGuy, "");
-            });
-          }
-        });
-      });
-      return convData;
-    })
-    .then((res) => {
-      const regs = finalRegexes(miscargs);
-      let convData = res;
-      Object.values(regs).forEach((section) => {
-        section["find"].forEach((regex, index) => {
-          convData = convData.replace(regex, section["replace"][index]);
-        });
-      });
-      return convData;
-    })
-    .then((res) => {
-      if (promote) {
-        const convData = promoteSection(res);
-        return convData;
-      }
-      return res;
-    })
-    .then((res) => {
-      fs.writeFile(input.substring(0, input.length - 4) + "tex", res, (err) =>
-        console.log("File succesfully converted")
-      );
-    })
-    .then(() => {
-      // fs.unlink("temp.tex", (err) => { console.error(err) })
-    }).then(() => {
-      const file = `${input.slice(0, -5)}.pdf`
-      console.log("Generating bibliography from pdf")
 
-      const formData = new FormData()
-      formData.append('input', fs.createReadStream(`${dirpath}/${file}`))
-      formData.append('consolidateCitations', '1')
-
-      const options = {
-        method: "POST",
-        host: 'cloud.science-miner.com',
-        path: '/grobid/api/processReferences',
-        protocol: 'https:',
-        headers: {
-          "Accept": "application/x-bibtex",
-          // "Request type": "multipart/form-data",
-        }
-      }
-      //const req = https.request(
-      formData.submit(options,
-        (err, res) => {
-          console.log(`STATUS: ${res.statusCode}`);
-          console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-          res.setEncoding('utf8');
-          res.on('data', async (chunk) => {
-            let data = await chunk
-            const chunks = [...data.matchAll(/\@.+?\n\}\n?/gms)].flat()
-            const num = /\@(\w+)\{(\d+)/g
-            const dt = /date = \{(\d\d\d\d)[^\}]*\}/g
-            const auth = /author = \{(\w+)/g
-            const newChunks = chunks.map((ch, index) => {
-              const date = [...ch.matchAll(dt)][0]
-              const author = [...ch.matchAll(auth)][0]
-              if (!date?.length || !author?.length) {
-                return
-              }
-              const chun = ch.replace(num, `\@$1\{${author[1]}${date[1]}`)
-              const chu = chun.replace(dt, `date = \{${date[1]}\}`)
-              console.log(chu)
-              return chu
-            })
-            await fs.promises.writeFile(
-              `${dirpath}/${input.slice(0, -5)}.bib`, newChunks.join('\n'))
-          });
-          res.on('end', () => {
-            console.log('Extracted citations.');
-          });
-          if (err) {
-            console.error(err)
-          }
+  // complex regex: find something, then put it somewhere else
+  Object.values(complexRegexes).forEach((section) => {
+    section["match"].forEach((regex, index) => {
+      const match = section["number"][index]
+        ? Array.from(convData.matchAll(regex)).slice(
+          0,
+          section["number"][index]
+        )
+        : Array.from(convData.matchAll(regex));
+      if (match.length) {
+        match.forEach((m) => {
+          const importantThingy = m[section["replace"][index]];
+          const wholeGuy = m[0];
+          convData = convData.replace(
+            section["find"][index],
+            importantThingy
+          );
+          convData = convData.replaceAll(wholeGuy, "");
         });
-    }).then(() => {
-      try {
-        exec(`latexmk -${engine} --synctex=1 -interaction=nonstopmode  -file-line-error  ${input.slice(0, -5)}.tex -jobname=${input.slice(0, -5)}-conv.pdf`)
-      } catch (e) {
-        console.log(`Something went wrong while generating the pdf, probably because you either
+      }
+    });
+  });
+
+  const regs = finalRegexes(miscargs);
+  Object.values(regs).forEach((section) => {
+    section["find"].forEach((regex, index) => {
+      convData = convData.replace(regex, section["replace"][index]);
+    });
+  })
+
+  if (promote) {
+    convData = promoteSection(convData);
+  }
+  fs.writeFileSync(input.substring(0, input.length - 4) + "tex", convData)
+  fs.unlinkSync("temp.tex", (err) => { console.error(err) })
+  const file = `${input.slice(0, -5)}.pdf`
+  console.log("Generating bibliography from pdf")
+
+  const formData = new FormData()
+  formData.append('input', fs.createReadStream(`${dirpath}/${file}`))
+  formData.append('consolidateCitations', '1')
+
+  const options = {
+    method: "POST",
+    host: 'cloud.science-miner.com',
+    path: '/grobid/api/processReferences',
+    protocol: 'https:',
+    headers: {
+      "Accept": "application/x-bibtex",
+      //      "Request type": "multipart/form-data",
+    }
+  }
+
+  const req = https.request(
+    formData.submit(options,
+      (err, res) => {
+        console.log(`STATUS: ${res.statusCode}`);
+        console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+        res.setEncoding('utf8');
+        let rawData = ''
+        res.on('data', (chunk) => { rawData += chunk })
+        res.on('end', () => {
+          const chunks = [...rawData.matchAll(/\@.+?\n\}\n?/gms)].flat()
+          const num = /\@(\w+)\{(\d+)/g
+          const dt = /date = \{(\d\d\d\d)[^\}]*\}/g
+          const auth = /author = \{(\w+)/g
+          const newChunks = chunks.map((ch, index) => {
+            const date = [...ch.matchAll(dt)][0]
+            const author = [...ch.matchAll(auth)][0]
+            if (!date?.length || !author?.length) {
+              return
+            }
+            const chun = ch.replace(num, `\@$1\{${author[1]}${date[1]}`)
+            return chun.replace(dt, `date = \{${date[1]}\}`)
+          })
+          const bibloc = `${dirpath}/${input.slice(0, -5)}.bib`
+          fs.unlinkSync(bibloc)
+          fs.writeFileSync(
+            `${dirpath}/${input.slice(0, -5)}.bib`, newChunks.join('\n'))
+          console.log('Extracted citations.');
+          console.log('Converting to pdf...')
+          try {
+            exec(`latexmk -${engine}   ${input.slice(0, -5)}.tex -jobname=${input.slice(0, -5)}-conv.pdf -f`)
+          } catch (e) {
+            console.log(`Something went wrong while generating the pdf, probably because you either
 don't have the correct files in the correct folder, don't have latexmk, xelatex or biber
 installed/on your path, or you don't have the correct fonts.`)
-        console.error(e)
-        console.log(`You can always manually copy the .tex and .bib into overleaf.`)
-      }
-    })
-};
+            console.error(e)
+            console.log(`You can always manually copy the .tex and .bib into overleaf.`)
+          }
+        });
+        if (err) {
+          console.error(err)
+        }
+      })
+  )
+}
 
 const promote = ({ input }) => {
   fs.promises
