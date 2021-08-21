@@ -112,7 +112,7 @@ module.exports = {
 % The pages of the article, comment out if rolling article
       %\\jpages{1 - 12}
 % Link to the logo, might be redundant
-    \\jlogo{media / jote_logo_full.png}
+    \\jlogo{media/jote_logo_full.png}
 
 % Fill something here if this is a rolling / online first article, will make ROLLING ARTICLE show up on the first page
     \\rolling{}

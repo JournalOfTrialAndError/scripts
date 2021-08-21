@@ -11,6 +11,12 @@
     "jote-article10"
     "gensymb"
     "graphicx"
-    "adjustbox"))
+    "adjustbox")
+   (LaTeX-add-environments
+    '("biography" LaTeX-env-args ["argument"] 1)
+    '("remark" LaTeX-env-args ["argument"] 0)
+    '("example" LaTeX-env-args ["argument"] 0)
+    '("definition" LaTeX-env-args ["argument"] 0)
+    '("proof" LaTeX-env-args ["argument"] 0)))
  :latex)
 

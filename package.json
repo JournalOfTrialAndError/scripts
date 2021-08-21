@@ -6,10 +6,12 @@
   "license": "GPLv3",
   "private": true,
   "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "citation-js": "0.5.0-alpha.6",
     "commander": "^8.1.0",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
-    "mammoth": "^1.4.17",
+    "jszip": "^3.7.1",
     "node-pandoc": "^0.3.0",
     "node-pandoc-promise": "^0.0.6"
   },
