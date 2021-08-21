@@ -365,7 +365,11 @@ const cheer = async (props) => {
             .toArray()
             .flat()
 
-          console.log(cites.length)
+          if (cites.length === 0) {
+            console.log(`No citations found. This might be because there were no citations,\n
+or because they were made using shitty software.`)
+          }
+
           const uniqueCites = cites
             .filter((cite, i) => {
               return !cites.some((c, j) => {
@@ -377,11 +381,16 @@ const cheer = async (props) => {
             })
             .map((u) => u.itemData)
 
+          console.log(`Succesfully extracted ${cites.length} unique citations.
+Converting...
+`)
           const citeString = JSON.stringify(uniqueCites, null, 2)
 
           const render = Cite(citeString)
-          //const voila = render.format(format)
-          console.log(render.format(format))
+          const voila = render.format(format)
+
+          fs.writeFileSync(`${input.slice(0, -5)}.bib`, voila)
+          console.log(`Output ${format} file to ${input.slice(0, -5)}.bib`)
         }
       })
   })
