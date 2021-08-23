@@ -9,11 +9,13 @@ const https = require('https')
 const FormData = require('form-data')
 const { program } = require('commander')
 const util = require('util')
-const { execSync } = require('child_process')
+const { execSync, exec } = require('child_process')
 const cheerio = require('cheerio')
 const htmlparser2 = require('htmlparser2')
 const JSZip = require('jszip')
 const Cite = require('citation-js')
+const { latexSymbols } = require('./latex')
+const inquirer = require('inquirer')
 
 const regexes = {
   misc: {
@@ -62,6 +64,10 @@ const regexes = {
 
   //   ]
   // }
+  unicode: {
+    find: [...Object.keys(latexSymbols)],
+    replace: [...Object.values(latexSymbols)],
+  },
 }
 
 const complexRegexes = {
@@ -130,23 +136,35 @@ const convert = async ({
   compile,
   bibliography,
 }) => {
-  console.log(input)
+  const file = `${input.slice(0, -5)}`
   const dirpath = path.dirname(fs.realpathSync(input))
-  console.log(dirpath)
   const args = ['-f', 'docx', '-t', 'latex', '-o', `${dirpath}/temp.tex`, '--extract-media=media']
   const miscargs = [
     received,
     accepted,
     published,
     crossmark,
-    `${input.slice(0, -5)}.bib`,
+    `${file}.bib`,
     doi,
     running,
     type,
     citation,
   ].map((m) => m ?? 'TOBEFILLEDIN')
 
-  await nodePandoc(input, args)
+  try {
+    await nodePandoc(input, args)
+  } catch (e) {
+    if (e.status === 127) {
+      console.error(
+        'You do not have Pandoc installed. Please install it in order to use this converter.',
+      )
+      return
+    }
+
+    console.error('Something went wrong.')
+    console.error(e)
+    return
+  }
 
   let convData = fs.readFileSync(`${dirpath}/temp.tex`, { encoding: 'utf8' })
 
@@ -194,83 +212,109 @@ const convert = async ({
     console.error(err)
   })
 
-  const file = pdf || `${input.slice(0, -5)}.pdf`
-
-  if (!pdf || !compile || !fs.existsSync(file)) {
+  if (!compile) {
     console.log('Donzo')
     return
   }
-  console.log('Generating bibliography from pdf')
+  // console.log('Generating bibliography from pdf')
 
-  const formData = new FormData()
-  formData.append('input', fs.createReadStream(`${dirpath}/${file}`))
-  formData.append('consolidateCitations', '1')
+  // const formData = new FormData()
+  // formData.append('input', fs.createReadStream(`${dirpath}/${file}`))
+  // formData.append('consolidateCitations', '1')
 
-  const options = {
-    method: 'POST',
-    host: 'cloud.science-miner.com',
-    path: '/grobid/api/processReferences',
-    protocol: 'https:',
-    headers: {
-      Accept: 'application/x-bibtex',
-      //      "Request type": "multipart/form-data",
-    },
-  }
+  // const options = {
+  //   method: 'POST',
+  //   host: 'cloud.science-miner.com',
+  //   path: '/grobid/api/processReferences',
+  //   protocol: 'https:',
+  //   headers: {
+  //     Accept: 'application/x-bibtex',
+  //     //      "Request type": "multipart/form-data",
+  //   },
+  // }
 
-  const req = https.request(
-    formData.submit(options, (err, res) => {
-      console.log(`STATUS: ${res.statusCode}`)
-      console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
-      res.setEncoding('utf8')
-      let rawData = ''
-      res.on('data', (chunk) => {
-        rawData += chunk
-      })
-      res.on('end', () => {
-        const chunks = [...rawData.matchAll(/\@.+?\n\}\n?/gms)].flat()
-        const num = /\@(\w+)\{(\d+)/g
-        const dt = /date = \{(\d\d\d\d)[^\}]*\}/g
-        const auth = /author = \{(\w+)/g
-        const newChunks = chunks.map((ch, index) => {
-          const date = [...ch.matchAll(dt)][0]
-          const author = [...ch.matchAll(auth)][0]
-          if (!date?.length || !author?.length) {
-            return
-          }
-          const chun = ch.replace(num, `\@$1\{${author[1]}${date[1]}`)
-          return chun.replace(dt, `date = \{${date[1]}\}`)
-        })
-        const bibloc = `${dirpath}/${input.slice(0, -5)}.bib`
-        fs.unlinkSync(bibloc)
-        fs.writeFileSync(`${dirpath}/${input.slice(0, -5)}.bib`, newChunks.join('\n'))
-        console.log('Extracted citations.')
-        console.log('Converting to pdf...')
+  // const req = https.request(
+  //   formData.submit(options, (err, res) => {
+  //     console.log(`STATUS: ${res.statusCode}`)
+  //     console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
+  //     res.setEncoding('utf8')
+  //     let rawData = ''
+  //     res.on('data', (chunk) => {
+  //       rawData += chunk
+  //     })
+  //     res.on('end', () => {
+  //       const chunks = [...rawData.matchAll(/\@.+?\n\}\n?/gms)].flat()
+  //       const num = /\@(\w+)\{(\d+)/g
+  //       const dt = /date = \{(\d\d\d\d)[^\}]*\}/g
+  //       const auth = /author = \{(\w+)/g
+  //       const newChunks = chunks.map((ch, index) => {
+  //         const date = [...ch.matchAll(dt)][0]
+  //         const author = [...ch.matchAll(auth)][0]
+  //         if (!date?.length || !author?.length) {
+  //           return
+  //         }
+  //         const chun = ch.replace(num, `\@$1\{${author[1]}${date[1]}`)
+  //         return chun.replace(dt, `date = \{${date[1]}\}`)
+  //       })
+  //       const bibloc = `${dirpath}/${input.slice(0, -5)}.bib`
+  //       fs.unlinkSync(bibloc)
+  //       fs.writeFileSync(`${dirpath}/${input.slice(0, -5)}.bib`, newChunks.join('\n'))
+  console.log('Extracted citations.')
 
-        execSync(
-          `rm -f *.aux *.bbl *.bcf *.log *.blg *.fdb_latexmk *.fls *.out *.upa *.xdv *.upb *.vdv`,
-        )
-        try {
-          execSync(
-            `latexmk -pdf -pdflatex=${engine} -jobname=${input.slice(
-              0,
-              -5,
-            )}-conv -interaction=nonstopmode -file-line-error -f  ${input.slice(0, -5)}.tex`,
-          )
-        } catch (e) {
-          console.log(`Something went wrong while generating the pdf, probably because you either
-don't have the correct files in the correct folder, don't have latexmk, xelatex or biber
-installed/on your path, or you don't have the correct fonts.`)
-          console.error(e)
-          console.log(`You can always manually copy the .tex and .bib into overleaf.`)
-        }
-      })
-      if (err) {
-        console.error(err)
+  await execSync(
+    `rm -f *.aux *.bbl *.bcf *.log *.blg *.fdb_latexmk *.fls *.out *.upa *.xdv *.upb *.vdv`,
+  )
+  try {
+    console.log('Converting to pdf...')
+    await execSync(
+      `latexmk -pdf -pdflatex=${engine} -jobname=${file}-conv -interaction=nonstopmode -file-line-error -f   ${file}.tex`,
+    )
+  } catch (e) {
+    if (e.status === 127) {
+      console.log(
+        "Whoops, you don't seem to have LaTeXMk installed. \n Want to try to do it with normal latex?",
+      )
+      const answer = await inquirer.prompt([{ type: 'input', name: 'answer', message: 'y/n' }])
+      if (answer.answer === n) {
+        console.log('Exiting conversion. Please install LaTeXMk.')
+      }
+      try {
+        console.log('Just running xelatex and bibtex a bunch')
+        await exec(`xelatex interaction=nonstopmode -f ${file.pdf}`)
+        await exec(`biber ${file}`)
+        await exec(`xelatex interaction=nonstopmode -f ${file.pdf}`)
+        await exec(`biber ${file}`)
+        await exec(`xelatex interaction=nonstopmode -f ${file.pdf}`)
+      } catch (e) {
+        console.log('Ah fuck.')
+        console.error(e)
         return
       }
-      return
-    }),
-  )
+    }
+    console.error(e)
+    console.log(`Something went wrong while generating the pdf, probably because you either
+don't have the correct files in the correct folder, don't have latexmk, xelatex or biber
+installed/on your path, or you don't have the correct fonts.`)
+    console.log(`You can always manually copy the .tex and .bib into overleaf.`)
+    return
+  }
+  console.log("We're done!")
+  console.log(`Opening ${file}.pdf`)
+  try {
+    await execSync(`open ${file}-conv.pdf`)
+  } catch (e) {
+    console.log("Couldn't open the dang thing.")
+    console.error(e)
+    return
+  }
+  //   })
+  //   if (err) {
+  //     console.error(err)
+  //     return
+  //   }
+  //   return
+  // }),
+  // )
 }
 
 const promote = ({ input }) => {
@@ -305,8 +349,7 @@ const docxjs = ({ input }) => {
 }
 
 const cheer = async (props) => {
-  const { input, tables, ref, format = 'bibtex' } = props
-  console.log(format)
+  const { input, tables, ref, cite, format = 'bibtex' } = props
   // const zip = fs.createReadStream(input).pipe(unzipper.Parse({ forceStream: true }))
   // for await (const entry of zip) {
   //   const fileName = entry.path
@@ -316,84 +359,189 @@ const cheer = async (props) => {
   //     //const dom = htmlparser2.parseDocument(entry)
   //     console.log(entry.buffer)
   const docx = fs.readFileSync(input)
-  JSZip.loadAsync(docx).then((zip) => {
-    zip
-      .file('word/document.xml')
-      .async('string')
-      .then((xml) => {
-        const $ = cheerio.load(xml)
-        if (tables) {
-          const voila = $('w\\:tbl')
-            .map((t, table) => {
-              let cols = ''
-              const tab = $(table)
-                .find('w\\:tr')
-                .map((r, row) => {
-                  cols = 0
-                  return $(row)
-                    .find('w\\:tc')
-                    .map((c, column) => {
-                      cols++
-                      const text = $('w\\:t', column).text()
-                      console.log(`Table ${t}. Row ${r}. Column ${c}: ${text}`)
-                      return text
-                    })
-                    .toArray()
-                    .join(' & ')
-                })
-                .toArray()
-                .join('\\ \n')
-              const aligns = Array(cols).join(' l ')
-              return `\\begin{tabularx}{\\columnwidth}[${aligns}]
+  const zip = await JSZip.loadAsync(docx)
+  const xml = await zip.file('word/document.xml').async('string')
+
+  const $ = cheerio.load(xml)
+  if (tables) {
+    //find the bables
+    const voila = $('w\\:tbl')
+      .map((t, table) => {
+        let cols = ''
+        // find the rows
+        const tab = $(table)
+          .find('w\\:tr')
+          .map((r, row) => {
+            cols = 0
+            // find the columns
+            return $(row)
+              .find('w\\:tc')
+              .map((c, column) => {
+                cols++
+                //find the text, wihch is found in <w:r>
+                return $(column)
+                  .find('w\\:p')
+                  .map((r, row) => {
+                    const text = $('w\\:t', row).text()
+                    const italics = !!$(row).find('w\\:i').length ? `\\textit{${text}}` : text
+                    console.log(italics)
+                    const bold = !!$(row).find('w\\:b').length ? `\\textbf{${italics}}` : italics
+                    console.log(bold)
+                    console.log(`Table ${t}. Row ${r}. Column ${c}: ${text}`)
+                    return bold
+                  })
+                  .toArray()
+                  .join(' ')
+              })
+              .toArray()
+              .join(' & ')
+          })
+          .toArray()
+          .join('\\ \n')
+        const aligns = Array(cols).join(' l ')
+        return `\\begin{tabularx}{\\columnwidth}[${aligns}]
       ${tab}
 \\end{tabularx}`
-            })
-            .toArray()
-          console.log(voila)
-        }
-        if (ref) {
-          const cites = $('w\\:instrText')
-            .map((i, cite) => {
-              const citation = JSON.parse(
-                $(cite)
-                  .text()
-                  .trim()
-                  .match(/\{.+\}/),
-              )
-              return citation?.citationItems && citation?.citationItems
-            })
-            .toArray()
-            .flat()
+      })
+      .toArray()
+    console.log(voila)
+  }
+  if (cite) {
+    const cites = $('w\\:instrText')
+      .map((i, cite) => {
+        const citation = JSON.parse(
+          $(cite)
+            .text()
+            .trim()
+            .match(/\{.+\}/),
+        )
+        return citation?.citationItems && citation?.citationItems
+      })
+      .toArray()
+      .flat()
 
-          if (cites.length === 0) {
-            console.log(`No citations found. This might be because there were no citations,\n
-or because they were made using shitty software.`)
+    if (cites.length === 0) {
+      console.log(`No citations found. This might be because there were no citations,\n
+or because they were made using shitty software.\n
+Trying to extract cites manually.`)
+      return
+    }
+
+    const uniqueCites = cites
+      .filter((cite, i) => {
+        return !cites.some((c, j) => {
+          if ((i = j)) {
+            return false
           }
+          return c.id === cite.id
+        })
+      })
+      .map((u) => u.itemData)
 
-          const uniqueCites = cites
-            .filter((cite, i) => {
-              return !cites.some((c, j) => {
-                if ((i = j)) {
-                  return false
-                }
-                return c.id === cite.id
-              })
-            })
-            .map((u) => u.itemData)
-
-          console.log(`Succesfully extracted ${cites.length} unique citations.
+    console.log(`Succesfully extracted ${cites.length} unique citations.
 Converting...
 `)
-          const citeString = JSON.stringify(uniqueCites, null, 2)
+    const citeString = JSON.stringify(uniqueCites, null, 2)
 
-          const render = Cite(citeString)
-          const voila = render.format(format)
+    const render = Cite(citeString)
+    const voila = render.format(format)
 
-          fs.writeFileSync(`${input.slice(0, -5)}.bib`, voila)
-          console.log(`Output ${format} file to ${input.slice(0, -5)}.bib`)
+    fs.writeFileSync(`${input.slice(0, -5)}.bib`, voila)
+    console.log(`Output ${format} file to ${input.slice(0, -5)}.bib`)
+  }
+  if (ref) {
+    const paragraphs = $('w\\:p')
+
+    let refToggle = false
+    console.log('Extracting references manually')
+    const citeString = paragraphs
+      .map((i, par) => {
+        const p = $(par)
+          .find('w\\:t')
+          .filter((i, t) => {
+            const txt = $(t).text()
+            if (refToggle && txt.includes('Appendix')) {
+              refToggle = false
+              return false
+            }
+            if (txt === 'References') {
+              refToggle = true
+              //I don't want the word "references"
+              return false
+            }
+            return refToggle
+          })
+          .map((i, t) => {
+            return $(t).text()
+          })
+          .toArray()
+          .join('')
+        if (!p.length) {
+          return
         }
+        return p
       })
-  })
+      .toArray()
+      .join('\n')
+
+    const name = input.slice(0, -5)
+    fs.writeFileSync(`${name}.txt`, citeString)
+    console.log('Parsing extracted citations...')
+    try {
+      const bib = await execSync(`anystyle -f bib parse ${name}.txt `)
+      const bibber = fs.readFileSync(bib)
+      const bibbest = bibber.replaceAll(/\@(\w+)\{(.+?)a,/g, '@$1{$2,')
+      console.log(bibbest)
+      fs.writeFileSync(`${file}.bib`, bibbest)
+    } catch (e) {
+      console.error(e)
+      if (e.status == 127) {
+        console.log(
+          'You do not have AnyStyle installed. Want to try to install it? (if you have Ruby)',
+        )
+        const answer = await inquirer.prompt([{ type: 'input', name: 'answer', message: 'y/n' }])
+        if (answer.answer === 'n') {
+          console.log('Exiting bibliography parsing.')
+          return
+        }
+        try {
+          await exec('gem install anystyle xrel')
+        } catch (e) {
+          if (e.status === 127) {
+            console.error('Ruby not installed.')
+            console.log(
+              'First install Ruby in order to do this conversion.\n https://www.ruby-lang.org/en/downloads/',
+            )
+            return
+          }
+          console.error('Something went wrong, no idea what though.')
+          console.log(e)
+          return
+        }
+        console.log('Anystyle successfully installed!')
+        try {
+          console.log('Trying conversion again...')
+          await exec(`anystyle parse ${name}.txt`)
+        } catch (e) {
+          if (e.status === 127) {
+            console.log(
+              "For some reason installation still did not work. \n You probably don't have anystyle on your path, see the error below.",
+            )
+            console.error(e)
+            return
+          }
+          console.error('Something else went wrong, sucks.')
+        }
+      }
+      console.error('Apparently you do have Anystyle installed, but something still went wrong.')
+      console.log(e)
+      return
+    }
+
+    // const voila = render.format(format)
+    console.log(`Stored extracted bibliography to ${name}.bib`)
+    // console.log(`Output ${format} file to ${input.slice(0, -5)}-ref.bib`)
+  }
 }
 
 program
@@ -429,7 +577,8 @@ program
   .command('cheerio')
   .option('-i, --input <input>', 'The input file in .docx')
   .option('--tables', 'Convert the tables to LaTeX')
-  .option('--ref', 'Steal the references from this hardworking researcher.')
+  .option('--ref', 'Get a plaintext list of the references, sort of.')
+  .option('--cite', 'Steal the references from this hardworking researcher.')
   .option(
     '-f, --format <input>',
     'The citation bib format. Defaults to bibtex. Options are those of CitationJS',
