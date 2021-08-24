@@ -1,5 +1,5 @@
 module.exports = {
-  joteBoilerplate: `% Document class options:
+  oldJoteBoilerplate: `% Document class options:
 % =======================
 %
 % serif: Sets the body font to be serif.
@@ -148,5 +148,5 @@ module.exports = {
     abstractmarker
     \\end{abstract}
     \\end{frontmatter}
-`
+`,
 }
