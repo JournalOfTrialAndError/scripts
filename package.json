@@ -12,9 +12,11 @@
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "inquirer": "^8.1.2",
+    "jest": "^27.1.0",
     "jszip": "^3.7.1",
     "node-pandoc": "^0.3.0",
-    "node-pandoc-promise": "^0.0.6"
+    "node-pandoc-promise": "^0.0.6",
+    "puppeteer": "^10.2.0"
   },
   "bin": {
     "jote-conv": "pubtodone.js"
