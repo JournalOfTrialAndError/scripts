@@ -16,11 +16,13 @@ const JSZip = require('jszip')
 const Cite = require('citation-js')
 //const { latexSymbols } = require('./latex')
 const inquirer = require('inquirer')
+const addFullCite = require('./addfullcite')
+const bookBoilerplate = require('./basic-boilerplate')
 
 const regexes = {
   misc: {
-    find: [/\\textbf\{\\hfill\\break\n\}/gm, /\~([A-Z])/gm, /\.\~/gm],
-    replace: ['', ' $1', '. '],
+    find: [/\\textbf\{\\hfill\\break\n\}/gm, /\~([A-Z])/gm, /\.\~/gm, /\\sout\{(.*?)\}/gm],
+    replace: ['', ' $1', '. ', '$1'],
   },
   lines: {
     find: [/(?<!([\.\?\!\}\%\)]\n)|([\.\%]))\n/gm, / +/gm],
@@ -29,16 +31,18 @@ const regexes = {
   citations: {
     find: [
       /([A-Z]\w+,? )and( [A-Z][\w\u00E9\']+,?) (\(?\d{4}\)?)/gm,
-      /(?<=(\d ?)); ([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\13)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?, (\d{4}),? ?(p+\. ?\d+ *)?(\))?/gm,
-      /\(([\w ]*)(?=; ?)?(; ?)?([a-z, ]*)? ?(([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\14)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?), (\d{4}),? ?(p+\. ?\d+ *)?(,\w+\d{4})*\)/gm,
-      /([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\12)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?(\'s)? \((\d{4})\)/gm,
+      /(?<=(\d ?))(;|,) ([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\13)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?,? (\d{4}|\d+ [A-Z\.]+),? ?(p+\. ?\d+ *)?(\))?/gm,
+      /\(([\w ]*)(?=; ?)?(; ?)?([a-z, ]*)? ?(([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\14)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?),? (\d{4}|\d+ ?[A-Z\.]+),? ?(p+\. ?\d+ *)?(\;|\))/gm,
+      /([A-Z]\. ?)*((([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\12)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?)(\'s)? \(((\d{4})|(\d+) ([A-Z\.]+))\)/gm,
+      /\, (\)|;)/gm,
     ],
     replace: [
       '$1\\&$2 $3',
-      ',$3$19$21',
+      '; \\pdftooltip{$4}{\\fullcite{$4$20}}, \\citeyear{$4$20}$22',
       // TODO replace nptextcite parencite or a more manual approach, pubpub does not pick up nptextcite
-      '($1$2\\pdftooltip{$4}{\\fullcite{$6$22$24}}\\nptextcite[$23]{$6$22$24})',
-      '\\textcite{$2$19}$18',
+      '($1$2\\pdftooltip{$4}{\\fullcite{$6$22}}, \\citeyear{$6$22}, $23$24',
+      '\\pdftooltip{$2}{\\fullcite{$3$21$22$23}} (\\citeyear{$3$21$22$23}$18)',
+      '$1',
     ],
   },
   sections: {
@@ -46,7 +50,7 @@ const regexes = {
       /(?<=(\n|))\\textbf\{([^\}]*)\} ?\n/gm,
       /\\hypertarget\{\w+\}\{\%\n\\(\w+)\\[(\w+)]\{\\texorpdfstring\{\2(\\protect\\hypertarget\{[^\}]*\}\{\}\{\d\})\}\{\2\d\}\}[^\n]\n/gm,
       // /\\hypertarget\{[^\}]*\}\{\%\n\\([^\{]*)\{([^\{]*)\}[^\n]*\n/gm],
-      /(\\textbf\{References\}|\\addcontentsline\{toc\}\{section\}\{References\}\n\\section\{References\})(.+?(?=(\\addcontentsline|\\end\{document\})))/gms,
+      /(\\textbf\{(References|Bibliography)\}|\\addcontentsline\{toc\}\{section\}\{(References|Bibliography)\}\n\\section\{(References|Bibliography)\})(.+?(?=(\\textbf|\\addcontentsline|\\end\{document\})))/gms,
       /\\hypertarget\{[^\}]*\}\{\%\n\\([^\{]*)\{(\\texorpdfstring\{)?([^\}]*)\}[^\n]*\n/gm,
     ],
     replace: [
@@ -107,6 +111,10 @@ const finalRegexes = (miscargs) => ({
     ],
     replace: miscargs,
   },
+  sections: {
+    find: [/\\addcontentsline.+?\n/gm, /section\{\d+[^\w]*([^\}]*)\}/gm],
+    replace: ['', 'section{\\MakeSentenceCase{$1}}'],
+  },
 })
 
 const promoteSection = (convData) => {
@@ -122,6 +130,7 @@ const promoteSection = (convData) => {
 
 const convert = async ({
   input,
+  interactive,
   promote,
   received,
   accepted,
@@ -134,7 +143,10 @@ const convert = async ({
   engine = 'xelatex',
   pdf,
   compile,
-  bibliography,
+  //bibliography,
+  bibliography = `${input.slice(0, -5).bib}`,
+  book,
+  directory,
 }) => {
   const file = `${input.slice(0, -5)}`
   const dirpath = path.dirname(fs.realpathSync(input))
@@ -144,7 +156,7 @@ const convert = async ({
     accepted,
     published,
     crossmark,
-    `${file}.bib`,
+    bibliography,
     doi,
     running,
     type,
@@ -168,18 +180,18 @@ const convert = async ({
 
   let convData = fs.readFileSync(`${dirpath}/temp.tex`, { encoding: 'utf8' })
 
+  const boiler = book ? bookBoilerplate : joteBoilerplate
+  convData = `
+    ${boiler}\n
+    ${convData}\n
+\\end{document}`
+
   //Easy regex, just simple find replace
   Object.values(regexes).forEach((section) => {
     section['find'].forEach((regex, index) => {
       convData = convData.replaceAll(regex, section['replace'][index])
     })
   })
-  convData =
-    joteBoilerplate +
-    convData +
-    `
-\\end{document}`
-
   // complex regex: find something, then put it somewhere else
   Object.values(complexRegexes).forEach((section) => {
     section['match'].forEach((regex, index) => {
@@ -213,11 +225,17 @@ const convert = async ({
   tables.forEach((table) => {
     convData = convData.replace(/\\begin\{longtable\}.*?\\end{longtable}/gms, table)
   })
-  fs.writeFileSync(input.substring(0, input.length - 4) + 'tex', convData)
+
+  const bib = fs.readFileSync(bibliography, { encoding: 'utf8' })
+  if (interactive) {
+    convData = addFullCite(convData, bib)
+  }
+  const output = `${directory}/${file}.tex`
+  fs.writeFileSync(output, convData)
+  console.log('Cleaning up.')
   fs.unlinkSync('temp.tex', (err) => {
     console.error(err)
   })
-
   if (!compile) {
     console.log('Donzo')
     return
@@ -566,18 +584,24 @@ Converting...
 program
   .command('convert')
   .description('just do what I want')
-  .option('-i, --input <input>', 'The input file in .docx')
-  .option('-r, --received <input>', 'The date the paper was received, D Month, YYYYY')
   .option('-a, --accepted <input>', 'The date the paper was accepted, D Month, YYYYY')
-  .option('-p, --published <input>', 'The date the paper was published, D Month, YYYYY')
+  .option(
+    '-b, --bibliography <input>',
+    'Custom bibliography file to use. Will otherwise default to the\n filename + bib',
+  )
+  .option('--book', 'Book instead of article')
   .option('-c, --crossmark <input>', 'The date for crossmark, YYYYY-MM-DD')
+  .option('--doi <input>', 'The doi of the paper, just the suffix.')
+  .option('-d, --directory <input>', 'Directory to do the output.')
+  .option('-i, --input <input>', 'The input file in .docx')
+  .option('--interactive', 'Add tooltips with the full citation')
+  .option('-p, --published <input>', 'The date the paper was published, D Month, YYYYY')
+  .option('-r, --received <input>', 'The date the paper was received, D Month, YYYYY')
+  .option('--references', 'refs')
   .option('-t, --type <input>', 'The type of the paper.')
-  .option('-d, --doi <input>', 'The doi of the paper, just the suffix.')
   .option('--running <input>', 'The running head')
   .option('--citation <input>', 'The citation style. Either authordate or numeric')
-  .option('-p, --pdf <input>', 'A pdf version of the docfile to generate citations.')
   .option('--compile', 'Whether to compile the pdf')
-  .option('-b, --bibliography', 'Whether to do bib stuff')
   .option('--promote', 'Whether to promote all headlines by 1')
   .option(
     '--engine <input>',
@@ -592,6 +616,7 @@ program
   .action(promote)
 
 program.command('docxjs').option('-i, --input <input>', 'The input file in .docx').action(docxjs)
+
 program
   .command('cheerio')
   .option('-i, --input <input>', 'The input file in .docx')

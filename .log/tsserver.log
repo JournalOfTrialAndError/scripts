@@ -1,81 +1,144 @@
-Info 0    [17:08:54.235] Starting TS Server
-Info 1    [17:08:54.236] Version: 4.3.5
-Info 2    [17:08:54.236] Arguments: /home/thomas/.local/share/nvm/v15.12.0/bin/node /usr/bin/tsserver --logFile /home/thomas/Projects/jotescripts/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/ffc0ba45f413fe8a6602e7720cf276e2/tscancellation*
-Info 3    [17:08:54.236] Platform: linux NodeVersion: 15 CaseSensitive: true
-Info 4    [17:08:54.236] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
-Info 5    [17:08:54.259] Search path: /home/thomas/Projects/jotescripts
-Info 6    [17:08:54.260] For info: /home/thomas/Projects/jotescripts/pubtodone.js :: No config files found.
-Info 7    [17:08:54.264] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 8    [17:08:57.993] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 3729.0036640167236ms
-Info 9    [17:08:57.993] Project '/dev/null/inferredProject1*' (Inferred)
-Info 10   [17:08:57.993] 	Files (223)
+Info 0    [22:54:08.398] Starting TS Server
+Info 1    [22:54:08.399] Version: 4.3.5
+Info 2    [22:54:08.399] Arguments: /home/thomas/.local/share/nvm/v15.12.0/bin/node /usr/bin/tsserver --logFile /home/thomas/Projects/jotescripts/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/7367fce0a87f23a651d33ec908afbcb1/tscancellation*
+Info 3    [22:54:08.399] Platform: linux NodeVersion: 15 CaseSensitive: true
+Info 4    [22:54:08.399] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [22:54:08.595] Search path: /home/thomas/Projects/jotescripts
+Info 6    [22:54:08.595] For info: /home/thomas/Projects/jotescripts/pubtodone.js :: No config files found.
+Info 7    [22:54:08.603] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 8    [22:54:12.153] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 3549.2528190016747ms
+Info 9    [22:54:12.153] Project '/dev/null/inferredProject1*' (Inferred)
+Info 10   [22:54:12.153] 	Files (225)
 
-Info 11   [17:08:57.993] -----------------------------------------------
-Info 12   [17:08:58.696] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 13   [17:08:59.440] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true Elapsed: 743.7914749979973ms
-Info 14   [17:08:59.440] Project '/dev/null/inferredProject1*' (Inferred)
-Info 15   [17:08:59.440] 	Files (335)
+Info 11   [22:54:12.153] -----------------------------------------------
+Info 12   [22:54:12.677] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 13   [22:54:13.302] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true Elapsed: 624.144837975502ms
+Info 14   [22:54:13.302] Project '/dev/null/inferredProject1*' (Inferred)
+Info 15   [22:54:13.302] 	Files (337)
 
-Info 16   [17:08:59.440] -----------------------------------------------
-Info 17   [17:08:59.453] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry 0:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 18   [17:08:59.454] Elapsed:: 0.488802969455719ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry 0:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 19   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry 1:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 20   [17:08:59.454] Elapsed:: 0.06634604930877686ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry 1:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 21   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/nan 2:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 22   [17:08:59.454] Elapsed:: 0.04972398281097412ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/nan 2:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 23   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/bindings 3:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 24   [17:08:59.454] Elapsed:: 0.053798019886016846ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/bindings 3:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 25   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/fsevents 4:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 26   [17:08:59.454] Elapsed:: 0.04201102256774902ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/fsevents 4:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 27   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/file-uri-to-path 5:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 28   [17:08:59.454] Elapsed:: 0.05067998170852661ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/file-uri-to-path 5:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 29   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/fsevents 6:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 30   [17:08:59.454] Elapsed:: 0.04495799541473389ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/fsevents 6:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 31   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/bindings 7:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 32   [17:08:59.454] Elapsed:: 0.03816795349121094ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/bindings 7:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 33   [17:08:59.454] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/nan 8:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 34   [17:08:59.455] Elapsed:: 0.03999298810958862ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/nan 8:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 35   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/file-uri-to-path 9:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 36   [17:08:59.455] Elapsed:: 0.04769700765609741ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/file-uri-to-path 9:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 37   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 10:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 38   [17:08:59.455] Elapsed:: 0.029056012630462646ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 10:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 39   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/README.md 11:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 40   [17:08:59.455] Elapsed:: 0.14190399646759033ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/README.md 11:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 41   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/index.json 12:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 42   [17:08:59.455] Elapsed:: 0.22121495008468628ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/index.json 12:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 43   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/package.json 13:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 44   [17:08:59.455] Elapsed:: 0.07112902402877808ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/package.json 13:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 45   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 14:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 46   [17:08:59.455] Elapsed:: 0.025988996028900146ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 14:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 47   [17:08:59.455] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 15:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 48   [17:08:59.455] Elapsed:: 0.022033989429473877ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules/types-registry/types-registry 15:: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
-Info 49   [17:09:00.945] Before ensureProjectForOpenFiles:
-Info 50   [17:09:00.946] After ensureProjectForOpenFiles:
-Info 51   [17:09:00.947] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js
-Info 52   [17:10:15.859] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 53   [17:10:15.915] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 3 structureChanged: false Elapsed: 54.943661987781525ms
-Info 54   [17:10:15.915] Different program with same set of files:: structureIsReused:: 2
-Info 55   [17:10:16.260] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 56   [17:10:16.288] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 4 structureChanged: false Elapsed: 27.610532999038696ms
-Info 57   [17:10:16.288] Different program with same set of files:: structureIsReused:: 2
-Info 58   [17:10:16.390] getCompletionData: Get current token: 0.028752028942108154
-Info 59   [17:10:16.390] getCompletionData: Is inside comment: 0.010680019855499268
-Info 60   [17:10:16.390] getCompletionData: Get previous token 1: 0.10141003131866455
-Info 61   [17:10:16.390] getCompletionData: Get previous token 2: 0.06843197345733643
-Info 62   [17:10:16.391] getCompletionsAtPosition: isCompletionListBlocker: 0.3522689938545227
-Info 63   [17:10:16.391] Returning an empty list because completion was requested in an invalid position.
-Info 64   [17:10:16.597] getCompletionData: Get current token: 0.01954096555709839
-Info 65   [17:10:16.597] getCompletionData: Is inside comment: 0.008997023105621338
-Info 66   [17:10:16.597] getCompletionData: Get previous token 1: 0.04791700839996338
-Info 67   [17:10:16.597] getCompletionData: Get previous token 2: 0.05489397048950195
-Info 68   [17:10:16.597] getCompletionsAtPosition: isCompletionListBlocker: 0.018664002418518066
-Info 69   [17:10:16.597] Returning an empty list because completion was requested in an invalid position.
-Info 70   [17:10:17.067] getCompletionData: Get current token: 0.07588797807693481
-Info 71   [17:10:17.067] getCompletionData: Is inside comment: 0.034281015396118164
-Info 72   [17:10:17.067] getCompletionData: Get previous token 1: 0.17691701650619507
-Info 73   [17:10:17.068] getCompletionData: Get previous token 2: 0.19146698713302612
-Info 74   [17:10:17.068] getCompletionsAtPosition: isCompletionListBlocker: 0.08221304416656494
-Info 75   [17:10:17.068] Returning an empty list because completion was requested in an invalid position.
-Info 76   [17:10:17.443] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 77   [17:10:17.475] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 5 structureChanged: false Elapsed: 31.96415799856186ms
-Info 78   [17:10:17.475] Different program with same set of files:: structureIsReused:: 2
+Info 16   [22:54:13.302] -----------------------------------------------
+Info 17   [22:54:15.150] Before ensureProjectForOpenFiles:
+Info 18   [22:54:15.151] After ensureProjectForOpenFiles:
+Info 19   [22:54:15.152] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js
+Info 20   [22:54:18.765] Search path: /home/thomas/Projects/jotescripts
+Info 21   [22:54:18.765] For info: /home/thomas/Projects/jotescripts/puppeteer.js :: No config files found.
+Info 22   [22:54:18.766] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 23   [22:54:18.771] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 1 structureChanged: true Elapsed: 4.471717000007629ms
+Info 24   [22:54:18.771] Project '/dev/null/inferredProject2*' (Inferred)
+Info 25   [22:54:18.771] 	Files (19)
+
+Info 26   [22:54:18.771] -----------------------------------------------
+Info 27   [22:54:18.780] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 28   [22:54:18.883] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true Elapsed: 103.03253698348999ms
+Info 29   [22:54:18.884] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 30   [22:54:18.884] 	Files (29)
+
+Info 31   [22:54:18.884] -----------------------------------------------
+Info 32   [22:54:18.967] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 33   [22:54:19.054] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 2 structureChanged: true Elapsed: 86.37548702955246ms
+Info 34   [22:54:19.054] Project '/dev/null/inferredProject2*' (Inferred)
+Info 35   [22:54:19.054] 	Files (312)
+
+Info 36   [22:54:19.054] -----------------------------------------------
+Info 37   [22:54:19.054] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 38   [22:54:19.054] 	Files (29)
+
+Info 39   [22:54:19.054] -----------------------------------------------
+Info 40   [22:54:20.308] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 41   [22:54:20.388] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 3 structureChanged: true Elapsed: 79.35624998807907ms
+Info 42   [22:54:20.388] Different program with same set of files:: structureIsReused:: 1
+Info 43   [22:54:21.447] Before ensureProjectForOpenFiles:
+Info 44   [22:54:21.448] After ensureProjectForOpenFiles:
+Info 45   [22:54:21.448] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js,/home/thomas/Projects/jotescripts/puppeteer.js
+Info 46   [22:54:57.012] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 47   [22:54:57.097] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 4 structureChanged: true Elapsed: 84.96262699365616ms
+Info 48   [22:54:57.097] Different program with same set of files:: structureIsReused:: 1
+Info 49   [22:54:59.252] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 50   [22:54:59.472] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 5 structureChanged: true Elapsed: 219.91623401641846ms
+Info 51   [22:54:59.472] Project '/dev/null/inferredProject2*' (Inferred)
+Info 52   [22:54:59.472] 	Files (313)
+
+Info 53   [22:54:59.472] -----------------------------------------------
+Info 54   [22:54:59.472] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 55   [22:54:59.472] 	Files (29)
+
+Info 56   [22:54:59.472] -----------------------------------------------
+Info 57   [22:54:59.734] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules :: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 58   [22:54:59.734] Elapsed:: 0.23842698335647583ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules :: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 59   [22:54:59.734] DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules :: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject2* WatchType: Failed Lookup Locations
+Info 60   [22:54:59.734] Elapsed:: 0.03942298889160156ms DirectoryWatcher:: Triggered with /home/thomas/.cache/typescript/4.3/node_modules :: WatchInfo: /home/thomas/.cache/typescript/4.3/node_modules 1 undefined Project: /dev/null/inferredProject2* WatchType: Failed Lookup Locations
+Info 61   [22:55:00.022] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 62   [22:55:00.225] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 6 structureChanged: true Elapsed: 202.63601398468018ms
+Info 63   [22:55:00.225] Project '/dev/null/inferredProject2*' (Inferred)
+Info 64   [22:55:00.225] 	Files (313)
+
+Info 65   [22:55:00.225] -----------------------------------------------
+Info 66   [22:55:00.225] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 67   [22:55:00.225] 	Files (29)
+
+Info 68   [22:55:00.225] -----------------------------------------------
+Info 69   [22:55:01.002] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 70   [22:55:01.117] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 3 structureChanged: true Elapsed: 115.24607998132706ms
+Info 71   [22:55:01.117] Different program with same set of files:: structureIsReused:: 1
+Info 72   [22:55:03.251] Before ensureProjectForOpenFiles:
+Info 73   [22:55:03.252] After ensureProjectForOpenFiles:
+Info 74   [22:55:03.252] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js,/home/thomas/Projects/jotescripts/puppeteer.js
+Info 75   [22:56:57.659] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 76   [22:56:57.689] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 7 structureChanged: false Elapsed: 28.9325709939003ms
+Info 77   [22:56:57.689] Different program with same set of files:: structureIsReused:: 2
+Info 78   [22:56:58.689] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 79   [22:56:58.740] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 8 structureChanged: true Elapsed: 51.157746970653534ms
+Info 80   [22:56:58.740] Different program with same set of files:: structureIsReused:: 1
+Info 81   [22:57:03.283] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 82   [22:57:03.359] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 9 structureChanged: true Elapsed: 76.18658399581909ms
+Info 83   [22:57:03.359] Different program with same set of files:: structureIsReused:: 1
+Info 84   [22:57:04.502] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 85   [22:57:04.558] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 10 structureChanged: false Elapsed: 55.912907004356384ms
+Info 86   [22:57:04.558] Different program with same set of files:: structureIsReused:: 2
+Info 87   [22:57:06.700] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 88   [22:57:06.739] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 11 structureChanged: false Elapsed: 38.88941299915314ms
+Info 89   [22:57:06.739] Different program with same set of files:: structureIsReused:: 2
+Info 90   [22:57:10.710] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 91   [22:57:10.739] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 12 structureChanged: false Elapsed: 28.37412703037262ms
+Info 92   [22:57:10.739] Different program with same set of files:: structureIsReused:: 2
+Info 93   [23:00:12.108] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 94   [23:00:12.153] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 13 structureChanged: false Elapsed: 44.52234101295471ms
+Info 95   [23:00:12.153] Different program with same set of files:: structureIsReused:: 2
+Info 96   [23:00:13.361] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 97   [23:00:13.423] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 14 structureChanged: true Elapsed: 62.12254399061203ms
+Info 98   [23:00:13.424] Different program with same set of files:: structureIsReused:: 1
+Info 99   [23:00:20.142] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 100  [23:00:20.221] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 15 structureChanged: true Elapsed: 79.52501600980759ms
+Info 101  [23:00:20.222] Different program with same set of files:: structureIsReused:: 1
+Info 102  [23:02:29.155] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 103  [23:02:29.220] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 16 structureChanged: true Elapsed: 64.33110600709915ms
+Info 104  [23:02:29.220] Different program with same set of files:: structureIsReused:: 1
+Info 105  [23:02:40.139] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 106  [23:02:40.163] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 17 structureChanged: false Elapsed: 23.43561202287674ms
+Info 107  [23:02:40.163] Different program with same set of files:: structureIsReused:: 2
+Info 108  [23:02:42.899] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 109  [23:02:42.966] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 18 structureChanged: true Elapsed: 66.46450501680374ms
+Info 110  [23:02:42.966] Different program with same set of files:: structureIsReused:: 1
+Info 111  [23:02:43.389] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 112  [23:02:43.429] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 19 structureChanged: false Elapsed: 40.06240701675415ms
+Info 113  [23:02:43.429] Different program with same set of files:: structureIsReused:: 2
+Info 114  [23:02:44.294] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 115  [23:02:44.343] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 20 structureChanged: false Elapsed: 48.53108197450638ms
+Info 116  [23:02:44.343] Different program with same set of files:: structureIsReused:: 2
+Info 117  [23:02:44.707] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 118  [23:02:44.744] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 21 structureChanged: false Elapsed: 36.31573897600174ms
+Info 119  [23:02:44.744] Different program with same set of files:: structureIsReused:: 2
+Info 120  [23:06:53.928] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 121  [23:06:53.970] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 22 structureChanged: false Elapsed: 41.35238301753998ms
+Info 122  [23:06:53.970] Different program with same set of files:: structureIsReused:: 2
+Info 123  [23:06:54.828] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 124  [23:06:54.881] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 23 structureChanged: false Elapsed: 52.18140798807144ms
+Info 125  [23:06:54.881] Different program with same set of files:: structureIsReused:: 2
+Info 126  [23:06:54.920] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 127  [23:06:54.989] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 24 structureChanged: true Elapsed: 68.78807199001312ms
+Info 128  [23:06:54.989] Different program with same set of files:: structureIsReused:: 1
+Info 129  [23:06:59.221] DirectoryWatcher:: Triggered with /home/thomas/Projects/jotescripts/puppeteer.js :: WatchInfo: /home/thomas/Projects/jotescripts 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 130  [23:06:59.222] Elapsed:: 0.20371395349502563ms DirectoryWatcher:: Triggered with /home/thomas/Projects/jotescripts/puppeteer.js :: WatchInfo: /home/thomas/Projects/jotescripts 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 131  [23:06:59.370] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 132  [23:06:59.409] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 25 structureChanged: false Elapsed: 39.13174498081207ms
+Info 133  [23:06:59.409] Different program with same set of files:: structureIsReused:: 2
