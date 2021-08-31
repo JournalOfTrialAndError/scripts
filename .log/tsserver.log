@@ -52,3 +52,30 @@ Info 48   [17:08:59.455] Elapsed:: 0.022033989429473877ms DirectoryWatcher:: Tri
 Info 49   [17:09:00.945] Before ensureProjectForOpenFiles:
 Info 50   [17:09:00.946] After ensureProjectForOpenFiles:
 Info 51   [17:09:00.947] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js
+Info 52   [17:10:15.859] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 53   [17:10:15.915] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 3 structureChanged: false Elapsed: 54.943661987781525ms
+Info 54   [17:10:15.915] Different program with same set of files:: structureIsReused:: 2
+Info 55   [17:10:16.260] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 56   [17:10:16.288] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 4 structureChanged: false Elapsed: 27.610532999038696ms
+Info 57   [17:10:16.288] Different program with same set of files:: structureIsReused:: 2
+Info 58   [17:10:16.390] getCompletionData: Get current token: 0.028752028942108154
+Info 59   [17:10:16.390] getCompletionData: Is inside comment: 0.010680019855499268
+Info 60   [17:10:16.390] getCompletionData: Get previous token 1: 0.10141003131866455
+Info 61   [17:10:16.390] getCompletionData: Get previous token 2: 0.06843197345733643
+Info 62   [17:10:16.391] getCompletionsAtPosition: isCompletionListBlocker: 0.3522689938545227
+Info 63   [17:10:16.391] Returning an empty list because completion was requested in an invalid position.
+Info 64   [17:10:16.597] getCompletionData: Get current token: 0.01954096555709839
+Info 65   [17:10:16.597] getCompletionData: Is inside comment: 0.008997023105621338
+Info 66   [17:10:16.597] getCompletionData: Get previous token 1: 0.04791700839996338
+Info 67   [17:10:16.597] getCompletionData: Get previous token 2: 0.05489397048950195
+Info 68   [17:10:16.597] getCompletionsAtPosition: isCompletionListBlocker: 0.018664002418518066
+Info 69   [17:10:16.597] Returning an empty list because completion was requested in an invalid position.
+Info 70   [17:10:17.067] getCompletionData: Get current token: 0.07588797807693481
+Info 71   [17:10:17.067] getCompletionData: Is inside comment: 0.034281015396118164
+Info 72   [17:10:17.067] getCompletionData: Get previous token 1: 0.17691701650619507
+Info 73   [17:10:17.068] getCompletionData: Get previous token 2: 0.19146698713302612
+Info 74   [17:10:17.068] getCompletionsAtPosition: isCompletionListBlocker: 0.08221304416656494
+Info 75   [17:10:17.068] Returning an empty list because completion was requested in an invalid position.
+Info 76   [17:10:17.443] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 77   [17:10:17.475] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 5 structureChanged: false Elapsed: 31.96415799856186ms
+Info 78   [17:10:17.475] Different program with same set of files:: structureIsReused:: 2
