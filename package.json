@@ -20,5 +20,8 @@
   },
   "bin": {
     "jote-conv": "pubtodone.js"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

@@ -10,14 +10,11 @@ const FormData = require('form-data')
 const { program } = require('commander')
 const util = require('util')
 const { execSync, exec } = require('child_process')
-const cheerio = require('cheerio')
-const htmlparser2 = require('htmlparser2')
-const JSZip = require('jszip')
-const Cite = require('citation-js')
 //const { latexSymbols } = require('./latex')
 const inquirer = require('inquirer')
 const addFullCite = require('./addfullcite')
 const bookBoilerplate = require('./basic-boilerplate')
+const { getDocxXml, convertTables, extractCites, convertReferences } = require('cheerio')
 
 const regexes = {
   misc: {
@@ -220,7 +217,8 @@ const convert = async ({
     convData = promoteSection(convData)
   }
 
-  const tables = await cheer({ input: input, tables: true })
+  const cheerioXml = await getDocxXml(input)
+  const tables = await convertTables(cheerioXml)
 
   tables.forEach((table) => {
     convData = convData.replace(/\\begin\{longtable\}.*?\\end{longtable}/gms, table)
