@@ -14,7 +14,7 @@ const cheerio = require('cheerio')
 const htmlparser2 = require('htmlparser2')
 const JSZip = require('jszip')
 const Cite = require('citation-js')
-const { latexSymbols } = require('./latex')
+//const { latexSymbols } = require('./latex')
 const inquirer = require('inquirer')
 
 const regexes = {
@@ -30,14 +30,14 @@ const regexes = {
     find: [
       /([A-Z]\w+,? )and( [A-Z][\w\u00E9\']+,?) (\(?\d{4}\)?)/gm,
       /(?<=(\d ?)); ([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\13)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?, (\d{4}),? ?(p+\. ?\d+ *)?(\))?/gm,
-      /\(([\w ]*)(?=; ?)?(; ?)?([a-z, ]*)? ?([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\14)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?, (\d{4}),? ?(p+\. ?\d+ *)?(,\w+\d{4})*\)/gm,
+      /\(([\w ]*)(?=; ?)?(; ?)?([a-z, ]*)? ?(([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\14)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?), (\d{4}),? ?(p+\. ?\d+ *)?(,\w+\d{4})*\)/gm,
       /([A-Z]\. ?)*(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)((, (([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)(?=,)))*(,? \\\& )?(?<=\12)(([A-Z][\w\u00E9]*)((?:( |-|\'))[A-Z][\w\u00E9]*)*)?( et al\.)?(\'s)? \((\d{4})\)/gm,
     ],
     replace: [
       '$1\\&$2 $3',
       ',$3$19$21',
       // TODO replace nptextcite parencite or a more manual approach, pubpub does not pick up nptextcite
-      '($1$2\\nptextcite[$22]{$5$21$23})',
+      '($1$2\\pdftooltip{$4}{\\fullcite{$6$22$24}}\\nptextcite[$23]{$6$22$24})',
       '\\textcite{$2$19}$18',
     ],
   },
@@ -64,10 +64,10 @@ const regexes = {
 
   //   ]
   // }
-  unicode: {
-    find: [...Object.keys(latexSymbols)],
-    replace: [...Object.values(latexSymbols)],
-  },
+  //  unicode: {
+  //    find: [...Object.keys(latexSymbols)],
+  //    replace: [...Object.values(latexSymbols)],
+  //  },
 }
 
 const complexRegexes = {
@@ -207,6 +207,12 @@ const convert = async ({
   if (promote) {
     convData = promoteSection(convData)
   }
+
+  const tables = await cheer({ input: input, tables: true })
+
+  tables.forEach((table) => {
+    convData = convData.replace(/\\begin\{longtable\}.*?\\end{longtable}/gms, table)
+  })
   fs.writeFileSync(input.substring(0, input.length - 4) + 'tex', convData)
   fs.unlinkSync('temp.tex', (err) => {
     console.error(err)
@@ -367,27 +373,32 @@ const cheer = async (props) => {
     //find the bables
     const voila = $('w\\:tbl')
       .map((t, table) => {
-        let cols = ''
+        const cols = $(table).find('w\\:gridCol')
+        const widths = cols.map((i, col) => $(col).attr('w:w')).toArray()
+        console.log(widths)
+        const totalW = widths.reduce((acc, w) => (acc += parseInt(w)), 0)
+        console.log(totalW)
+        const aligns = widths
+          .map((w) => `S[table-column-width=${(w / totalW).toFixed(3)}\\linewidth]`)
+          .join(' ')
         // find the rows
         const tab = $(table)
           .find('w\\:tr')
           .map((r, row) => {
-            cols = 0
             // find the columns
-            return $(row)
+            const rr = $(row)
               .find('w\\:tc')
               .map((c, column) => {
-                cols++
                 //find the text, wihch is found in <w:r>
                 return $(column)
                   .find('w\\:p')
                   .map((r, row) => {
                     const text = $('w\\:t', row).text()
-                    const italics = !!$(row).find('w\\:i').length ? `\\textit{${text}}` : text
-                    console.log(italics)
+                    const escapedText = text.match(/[a-zA-Z]/g) ? `{${text}}` : text
+                    const italics = !!$(row).find('w\\:i').length
+                      ? `\\textit{${escapedText}}`
+                      : escapedText
                     const bold = !!$(row).find('w\\:b').length ? `\\textbf{${italics}}` : italics
-                    console.log(bold)
-                    console.log(`Table ${t}. Row ${r}. Column ${c}: ${text}`)
                     return bold
                   })
                   .toArray()
@@ -395,16 +406,24 @@ const cheer = async (props) => {
               })
               .toArray()
               .join(' & ')
+            return r === 0 ? `${rr}\\\\\n\\toprule` : `${rr}\\\\\n\\hline`
           })
           .toArray()
-          .join('\\ \n')
-        const aligns = Array(cols).join(' l ')
-        return `\\begin{tabularx}{\\columnwidth}[${aligns}]
+          .join('\n')
+        return `\n
+\\begin{table}[h!]
+  \\begin{fullwidth}
+  \\caption{}
+  \\label{tab:table${t + 1}}
+    \\begin{tabularx}{\\linewidth}{${aligns}}
       ${tab}
-\\end{tabularx}`
+    \\end{tabularx}
+  \\end{fullwidth}
+\\end{table}\n
+`
       })
       .toArray()
-    console.log(voila)
+    return voila
   }
   if (cite) {
     const cites = $('w\\:instrText')
