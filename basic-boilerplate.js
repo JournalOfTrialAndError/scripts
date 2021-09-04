@@ -1,4 +1,4 @@
-module.exports = `\\documentclass{jote-book}
+module.exports = `\\documentclass[connected]{jote-book}
 
 \\addbibresource{bibmarker}
 
@@ -13,12 +13,13 @@ module.exports = `\\documentclass{jote-book}
 \\affiliation{affiliationmarker}
 \\authoremail{emailmarker}
 \\papercite{papercitemarker}
+\\fancypapercite{fancypapercitemarker}
 
 
+\\setcounter{chapter}{chaptermarker}
+\\jotesubtitle{subtitlemarker}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Document Starts
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \\begin{document}
-\\subtitle{subtitlemarker}
 `
