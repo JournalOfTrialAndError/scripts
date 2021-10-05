@@ -1,32 +1,32 @@
-Info 0    [02:42:26.128] Starting TS Server
-Info 1    [02:42:26.129] Version: 4.3.5
-Info 2    [02:42:26.129] Arguments: /home/thomas/.local/share/nvm/v15.12.0/bin/node /usr/bin/tsserver --logFile /home/thomas/Projects/jotescripts/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/b153a7ac1741d52fcfd0fdab5c380d1c/tscancellation*
-Info 3    [02:42:26.129] Platform: linux NodeVersion: 15 CaseSensitive: true
-Info 4    [02:42:26.129] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
-Info 5    [02:42:30.223] Search path: /home/thomas/Projects/jotescripts
-Info 6    [02:42:30.224] For info: /home/thomas/Projects/jotescripts/pubtodone.js :: No config files found.
-Info 7    [02:42:30.230] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 8    [02:42:34.270] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 4040.2941749989986ms
-Info 9    [02:42:34.270] Project '/dev/null/inferredProject1*' (Inferred)
-Info 10   [02:42:34.270] 	Files (327)
+Info 0    [18:54:56.796] Starting TS Server
+Info 1    [18:54:56.800] Version: 4.4.3
+Info 2    [18:54:56.800] Arguments: /usr/bin/node /usr/bin/tsserver --logFile /home/thomas/Projects/jotescripts/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/51471aa53c9c5b31c91cc7cc7da83b2a/tscancellation*
+Info 3    [18:54:56.800] Platform: linux NodeVersion: 10 CaseSensitive: true
+Info 4    [18:54:56.800] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [18:54:56.902] Search path: /home/thomas/Projects/jotescripts
+Info 6    [18:54:56.903] For info: /home/thomas/Projects/jotescripts/pubtodone.js :: No config files found.
+Info 7    [18:54:56.948] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 8    [18:55:17.305] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true structureIsReused:: Not Elapsed: 20356.155181005597ms
+Info 9    [18:55:17.305] Project '/dev/null/inferredProject1*' (Inferred)
+Info 10   [18:55:17.305] 	Files (464)
 
-Info 11   [02:42:34.270] -----------------------------------------------
-Info 12   [02:42:34.295] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
-Info 13   [02:42:35.030] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true Elapsed: 734.7858860008419ms
-Info 14   [02:42:35.030] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
-Info 15   [02:42:35.030] 	Files (141)
+Info 11   [18:55:17.305] -----------------------------------------------
+Info 12   [18:55:17.392] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 13   [18:55:18.273] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true structureIsReused:: Not Elapsed: 880.771296992898ms
+Info 14   [18:55:18.273] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 15   [18:55:18.273] 	Files (189)
 
-Info 16   [02:42:35.030] -----------------------------------------------
-Info 17   [02:42:35.740] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 18   [02:42:37.166] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true Elapsed: 1426.3864500001073ms
-Info 19   [02:42:37.166] Project '/dev/null/inferredProject1*' (Inferred)
-Info 20   [02:42:37.166] 	Files (795)
+Info 16   [18:55:18.273] -----------------------------------------------
+Info 17   [18:55:21.237] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 18   [18:55:26.932] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true structureIsReused:: Not Elapsed: 5694.861781001091ms
+Info 19   [18:55:26.933] Project '/dev/null/inferredProject1*' (Inferred)
+Info 20   [18:55:26.933] 	Files (927)
 
-Info 21   [02:42:37.166] -----------------------------------------------
-Info 22   [02:42:37.166] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
-Info 23   [02:42:37.166] 	Files (141)
+Info 21   [18:55:26.933] -----------------------------------------------
+Info 22   [18:55:26.933] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 23   [18:55:26.933] 	Files (189)
 
-Info 24   [02:42:37.167] -----------------------------------------------
-Info 25   [02:42:37.989] Before ensureProjectForOpenFiles:
-Info 26   [02:42:37.990] After ensureProjectForOpenFiles:
-Info 27   [02:42:37.991] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js
+Info 24   [18:55:26.933] -----------------------------------------------
+Info 25   [18:55:26.939] Before ensureProjectForOpenFiles:
+Info 26   [18:55:26.939] After ensureProjectForOpenFiles:
+Info 27   [18:55:26.940] got projects updated in background, updating diagnostics for /home/thomas/Projects/jotescripts/pubtodone.js
